@@ -1,0 +1,17 @@
+global:
+  registry: badibadi/
+  webapp_name: alejandro-gbadillo-marco-cab-web-app
+  webapp_port: 8080
+  mailserver_name: alejandro-gbadillo-marco-cab-mail-server
+  mailserver_port: 8081
+  database_name: alejandro-gbadillo-marco-cab-database
+  database_service: database-service
+  database_claim: database-claim
+  database_port: 3306
+  initContainer:
+    registry: 
+    image: alpine
+usvc:
+  image:
+    name: smartest-phones-web-app
+    tag: 0.0.1

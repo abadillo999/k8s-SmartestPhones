@@ -1,0 +1,4 @@
+usvc:
+  image:
+    name: smartest-phones-mail-server
+    tag: 0.0.1

@@ -1,0 +1,9 @@
+dependencies:
+  - name: database
+    alias: database
+    version: 0.0.1
+    repository: file://../../database
+  - name: smartest-phones-mail-server
+    alias: smartest-phones-mail-server
+    version: 0.0.1
+    repository: file://../../mailserver/helm

@@ -1,0 +1,7 @@
+usvc:
+  image:
+    name: mysql
+    tag: 5.6
+  user: user
+  password: phone
+  db_name: BDSmartestPhone

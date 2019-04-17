@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: {{ .Values.global.mailserver_name }}-deployment
+    labels:
+       app: {{ .Values.global.mailserver_name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.global.mailserver_name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.mailserver_name }}
+    spec:
+        initContainers:
+        - name: {{ .Values.global.mailserver_name }}-init
+          image: {{ .Values.global.initContainer.registry}}{{ .Values.global.initContainer.image }} 
+          imagePullPolicy: IfNotPresent
+          command: ["sh","-c"]
+          args:
+            - sleep 10;
+              until nslookup {{ .Values.global.database_service }};
+              do sleep 2;
+              done;
+              nc -w 1 -z {{ .Values.global.database_service }} {{ .Values.global.database_port }}
+        containers:
+        - name: {{ .Values.global.mailserver_name }}
+          image: {{ .Values.global.registry }}{{ .Values.usvc.image.name }}:{{ .Values.usvc.image.tag }}
+          imagePullPolicy: IfNotPresent
+          ports:
+           - containerPort: {{ .Values.global.mailserver_port }}  
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.global.mailserver_name }}-service
+spec:
+  type: NodePort
+  selector:
+    app: {{ .Values.global.mailserver_name }}
+  ports:
+  - protocol: TCP
+    port: {{ .Values.global.mailserver_port }}

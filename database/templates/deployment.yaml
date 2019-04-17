@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: {{ .Values.global.database_name }}
+    labels:
+       app: {{ .Values.global.database_name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.global.database_name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.database_name }}
+    spec:
+         containers:
+         - name: {{ .Values.global.database_name }}
+           image: {{ .Values.usvc.image.name }}:{{ .Values.usvc.image.tag }}
+           ports:
+           - containerPort: {{ .Values.global.database_port }}
+           env:
+           - name: "MYSQL_ROOT_PASSWORD"
+             value:  {{quote .Values.usvc.password}}
+           - name: "MYSQL_DATABASE"
+             value:  {{quote .Values.usvc.db_name}}
+           - name: "MYSQL_USER"
+             value:  {{quote .Values.usvc.user}}
+           - name: "MYSQL_PASSWORD"
+             value:  {{quote .Values.usvc.password}}
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.global.database_service }}
+spec:
+  selector:
+    app: {{ .Values.global.database_name }}
+  ports:
+  - protocol: TCP
+    port: {{ .Values.global.database_port }}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.global.database_claim }}
+  labels:
+    app:  {{ .Values.global.database_name }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi

@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Web application "SmartestPhones"
+name: smartest-phones-web-app
+version: 0.0.1
