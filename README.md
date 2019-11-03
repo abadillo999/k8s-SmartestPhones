@@ -116,19 +116,25 @@ spec:
     port: {{ .Values.global.webapp_port }}
 
 
-Instrucciones de despliegue:
+**Instrucciones de despliegue:**
+
 Primero se clonará el repo con el siguiente comando:
+
 -	git clone https://github.com/abadillo999/k8s-SmartestPhones.git
 -	cd k8s-SmartestPhones
+
 Después se debe hacer un update da las dependencias de la aplicación principal:
+
 -	helm dep update webapp/helm
+
 Para desplegar el servicio (con minikube levantado):
+
 -	helm install webapp/helm 
+
 Para ver el estado de los pods y esperar a que estén levantados y corriendo:
+
 -	kubectl get po
-NAME                                                              READY   STATUS    RESTARTS   AGE
-alejandro-gbadillo-marco-cab-database-54d5cb4c7-mrlp4             1/1     Running   0          6m58s
-alejandro-gbadillo-marco-cab-mail-server-deployment-6c448dbxdpq   1/1     Running   0          6m58s
-alejandro-gbadillo-marco-cab-web-app-deployment-ccbc996d8-4cn2t   1/1     Running   0          6m58s
+
 Finalmente para mostrar la GUI ejecutar el comando:
+
 -	  minikube service alejandro-gbadillo-marco-cab-web-app-service
